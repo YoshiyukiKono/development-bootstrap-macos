@@ -325,6 +325,20 @@ sudo xcode-select --switch /Library/Developer/CommandLineTools
 
 AppleもこのパスをCommand Line Toolsの選択先として案内しています。([Apple Developer][2])
 
+一括で簡単に判定するなら、こちらです。
+```bash
+if \
+  xcode-select -p >/dev/null 2>&1 &&
+  xcrun --find clang >/dev/null 2>&1 &&
+  xcrun --sdk macosx --show-sdk-version >/dev/null 2>&1 &&
+  pkgutil --pkg-info=com.apple.pkg.CLTools_Executables >/dev/null 2>&1
+then
+  echo "Command Line Tools: READY"
+else
+  echo "Command Line Tools: BROKEN OR INCOMPLETE"
+fi
+```
+
 その後に、
 
 ```bash
