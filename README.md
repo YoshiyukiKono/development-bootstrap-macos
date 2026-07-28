@@ -53,6 +53,9 @@ ditto -x -k \
   "$tmpdir"
 
 cd "$tmpdir/development-bootstrap-macos-main"
+
+chmod +x diagnose.sh base/*.sh shell/*.sh ssh/*.sh \
+  optional/rancher-desktop/*.sh
 ```
 
 `curl` と `ditto` はmacOSに最初からあります。`ditto -x -k` はZIP展開です。
