@@ -1,3 +1,26 @@
+```bash
+yoshiyuki.kono@mbp development-bootstrap-macos-main % ./base/diagnose.sh                                  
+Base tools
+./base/diagnose.sh: line 12: printf: --: invalid option
+printf: usage: printf [-v var] format [arguments]
+  OK       macOS 26.5.2 (arm64)
+  OK       Xcode Command Line Tools: /Library/Developer/CommandLineTools
+  OK       Homebrew: Homebrew >=4.3.0 (shallow or no git repository)
+  OK       Git
+  MISSING  GitHub CLI
+           Review: /var/folders/xp/whkf4y5527z__4tcfmnv45hc0000gn/T/tmp.s04BDc6gnK/development-bootstrap-macos-main/base/install-github-cli.sh
+  OK       Python 3: Python 3.13.4
+  MISSING  uv
+           Review: /var/folders/xp/whkf4y5527z__4tcfmnv45hc0000gn/T/tmp.s04BDc6gnK/development-bootstrap-macos-main/base/install-uv.sh
+  MISSING  Neovim
+           Review: /var/folders/xp/whkf4y5527z__4tcfmnv45hc0000gn/T/tmp.s04BDc6gnK/development-bootstrap-macos-main/base/install-neovim.sh
+  MISSING  Visual Studio Code is installed, but the 'code' command is not on PATH
+           Review: /var/folders/xp/whkf4y5527z__4tcfmnv45hc0000gn/T/tmp.s04BDc6gnK/development-bootstrap-macos-main/base/install-vscode.sh
+yoshiyuki.kono@mbp development-bootstrap-macos-main % 
+```
+
+何もしない場合の診断はこうでした。XCode Toolの陳腐化が考慮されていない。再インストールが必要な状況という理解で良い？
+
 **「再インストールが必要」とはまだ言えません。**
 正確には、現在の `diagnose.sh` では **Command Line Toolsが存在することしか確認しておらず、バージョンや互換性までは診断できていない**、です。
 
