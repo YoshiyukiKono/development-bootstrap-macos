@@ -220,7 +220,70 @@ cd "$tmpdir/development-bootstrap-macos-main"
 Review and run the required scripts. After Git is installed, delete
 this temporary copy and clone the repository normally.
 
-```
+
 **ZIP版は仮設足場、Git clone版が正式な作業コピー**という整理が最も自然です。
 
 
+`tmpdir` はシェル変数なので、再起動やターミナル終了で消えます。これは正常です。実体のディレクトリは残っている可能性もありますが、macOSの一時領域なので削除されていても不思議ではありません。
+
+まず残っているか確認できます。
+
+```bash
+find "$TMPDIR" -maxdepth 2 \
+  -type d \
+  -name 'development-bootstrap-macos-main' \
+  -print 2>/dev/null
+```
+
+パスが表示されたら、その場所へ移動します。
+
+```bash
+cd /表示されたパス/development-bootstrap-macos-main
+```
+
+何も表示されなければ、ZIPをもう一度取得すれば大丈夫です。
+
+今回は再起動をまたいでも残るように、`mktemp` ではなく明示的な作業場所を使うのがよいでしょう。
+
+```bash
+stage0="$HOME/tmp/development-bootstrap-macos-stage0"
+
+rm -rf "$stage0"
+mkdir -p "$stage0"
+
+curl -fL \
+  https://github.com/YoshiyukiKono/development-bootstrap-macos/archive/refs/heads/main.zip \
+  -o "$stage0/repository.zip"
+
+ditto -x -k \
+  "$stage0/repository.zip" \
+  "$stage0"
+
+cd "$stage0/development-bootstrap-macos-main"
+```
+
+ここなら再起動後も、
+
+```bash
+cd ~/tmp/development-bootstrap-macos-stage0/development-bootstrap-macos-main
+```
+
+で戻れます。
+
+Command Line ToolsとGitの準備が完了したら、この仮設コピーは削除し、正式にcloneします。
+
+```bash
+mkdir -p ~/dev/github.com/YoshiyukiKono
+cd ~/dev/github.com/YoshiyukiKono
+
+git clone \
+  https://github.com/YoshiyukiKono/development-bootstrap-macos.git
+```
+
+cloneを確認した後、仮設コピーを削除します。
+
+```bash
+rm -rf ~/tmp/development-bootstrap-macos-stage0
+```
+
+今回のように途中でOS更新や再起動が入るブートストラップでは、`mktemp` より `~/tmp/...-stage0` のような明示的な一時場所の方が扱いやすいです。
